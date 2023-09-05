@@ -104,7 +104,7 @@ VALUES (2,'2030-01-01',250.0,'2022-08-03 10:10:09.943',5),
 ";
 
 
-// Consulta Principal para o TESTE
+// Consulta 01 para a primeira etapa do teste
 $consulta_data = 'SELECT
         tb_banco.nome as "Banco",
         tb_convenio.verba as "Verba",
@@ -116,4 +116,20 @@ $consulta_data = 'SELECT
         inner join tb_banco on tb_convenio.id_banco = tb_banco.id_banco
         inner join tb_convenio_servico on tb_convenio_servico.id_convenio = tb_convenio.id_convenio
         inner join tb_contrato on tb_convenio_servico.id_convenio_servico = tb_contrato.id_convenio_servico 
+';
+
+
+// Consulta 02 para a seguda etapa do teste
+$consulta_data_2 = 'SELECT
+        tb_banco.nome as "Banco",
+        sum(tb_convenio.verba)  as "Verba",
+        min(tb_contrato.data_inclusao) as "Mais antigo",
+        max(tb_contrato.data_inclusao) as "Mais recente",
+        count(tb_banco.id_banco) as "Total contratos", 
+        sum(tb_contrato.valor) as "Soma dos Contratos"
+FROM tb_convenio
+        inner join tb_banco on tb_convenio.id_banco = tb_banco.id_banco
+        inner join tb_convenio_servico on tb_convenio_servico.id_convenio = tb_convenio.id_convenio
+        inner join tb_contrato on tb_convenio_servico.id_convenio_servico = tb_contrato.id_convenio_servico
+group by tb_banco.nome 
 ';
