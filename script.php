@@ -1,12 +1,11 @@
-<?php 
+<?php
 
 /**
  * Os dados inseridos são suposições de contratos
  */
 
 // CRIAÇÃO E INSERÇÃO DE DADOS DA TABELA 01
-$cria_tb_banco = "
-    create table if not exists tb_banco(
+$cria_tb_banco = "CREATE table if not exists tb_banco(
 	id_banco int primary key,
 	nome varchar(100)
     );
@@ -24,11 +23,10 @@ $insert_tb_banco = "
 
 
 // CRIAÇÃO E INSERÇÃO DE DADOS DA TABELA 02
-$cria_tb_convenio = "
-    create table if not exists tb_convenio(
+$cria_tb_convenio = "CREATE table if not exists tb_convenio(
 	id_convenio int primary key,
 	convenio varchar(100),
-	verba float, 
+	verba float,
 	id_banco int,
 	constraint fk_banco foreign key (id_banco) references tb_banco (id_banco)
     );
@@ -47,12 +45,11 @@ values (1, 'Fábrica de Eventos', 3000000, 2),
 
 
 // CRIAÇÃO E INSERÇÃO DE DADOS DA TABELA 03
-$cria_tb_convenio_servico = "
-    create table if not exists tb_convenio_servico(
-	id_convenio_servico int primary key, 
-	id_convenio int, 
-	servico varchar(100), 
-	
+$cria_tb_convenio_servico = "CREATE table if not exists tb_convenio_servico(
+	id_convenio_servico int primary key,
+	id_convenio int,
+	servico varchar(100),
+
 	constraint fk_conven_serv foreign key (id_convenio) references tb_convenio (id_convenio)
     );
 ";
@@ -74,14 +71,13 @@ values (1, 2, 'Pintura'),
 
 
 // CRIAÇÃO E INSERÇÃO DE DADOS DA TABELA 04
-$cria_tb_contrato = "
-    create table if not exists tb_contrato(
-	id_contrato int primary key, 
-	prazo date, 
+$cria_tb_contrato = "CREATE table if not exists tb_contrato(
+	id_contrato int primary key,
+	prazo date,
 	valor float,
-	data_inclusao timestamp, 
-	id_convenio_servico int, 
-	
+	data_inclusao timestamp,
+	id_convenio_servico int,
+
 	constraint fk_conServ foreign key (id_convenio_servico) references tb_convenio_servico (id_convenio_servico)
     );
 ";
@@ -109,13 +105,13 @@ $consulta_data = 'SELECT
         tb_banco.nome as "Banco",
         tb_convenio.verba as "Verba",
         tb_contrato.id_contrato as "Código do contrato",
-        tb_contrato.data_inclusao as "Data da inclusão", 
-        tb_contrato.valor as "Valor", 
+        tb_contrato.data_inclusao as "Data da inclusão",
+        tb_contrato.valor as "Valor",
         tb_contrato.prazo as "Prazo"
     FROM tb_convenio
         inner join tb_banco on tb_convenio.id_banco = tb_banco.id_banco
         inner join tb_convenio_servico on tb_convenio_servico.id_convenio = tb_convenio.id_convenio
-        inner join tb_contrato on tb_convenio_servico.id_convenio_servico = tb_contrato.id_convenio_servico 
+        inner join tb_contrato on tb_convenio_servico.id_convenio_servico = tb_contrato.id_convenio_servico
 ';
 
 
@@ -125,11 +121,11 @@ $consulta_data_2 = 'SELECT
         sum(tb_convenio.verba)  as "Verba",
         min(tb_contrato.data_inclusao) as "Mais antigo",
         max(tb_contrato.data_inclusao) as "Mais recente",
-        count(tb_banco.id_banco) as "Total contratos", 
+        count(tb_banco.id_banco) as "Total contratos",
         sum(tb_contrato.valor) as "Soma dos Contratos"
 FROM tb_convenio
         inner join tb_banco on tb_convenio.id_banco = tb_banco.id_banco
         inner join tb_convenio_servico on tb_convenio_servico.id_convenio = tb_convenio.id_convenio
         inner join tb_contrato on tb_convenio_servico.id_convenio_servico = tb_contrato.id_convenio_servico
-group by tb_banco.nome 
+group by tb_banco.nome
 ';
